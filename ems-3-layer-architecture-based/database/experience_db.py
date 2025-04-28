@@ -1,5 +1,5 @@
 # All the DB operations regarding Experience Table;
-from database.setup import get_db_connection
+from database.setup import DB_NAME, get_db_connection
 from models.experience import Experience
 
 add_experience_query = (
@@ -10,6 +10,7 @@ add_experience_query = (
 def add_experience(experience: Experience):
     db_connection = get_db_connection()
     cursor = db_connection.cursor()
+    cursor.execute(f"USE {DB_NAME}")
 
     try:
         cursor.execute(add_experience_query, experience)

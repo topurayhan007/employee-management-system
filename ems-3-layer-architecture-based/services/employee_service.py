@@ -5,7 +5,7 @@ from services.input_validation_service import InputValidator
 from tabulate import tabulate
 from services.education_service import EducationService
 from services.experience_service import ExperienceService
-from database.employee_db import add_employee
+from database.employee_db import add_employee, get_all_employee, search_employee, delete_an_employee
 
 # Employee Service Class
 class EmployeeService:
@@ -58,28 +58,26 @@ class EmployeeService:
             
 
     def printDataTable(self, data, flag):
-        headers = ["Employee ID", "Name", "Date of Birth", "NID", "Email", "Phone no.", "Gender", "Department","Designation", "Marital Status", "Present Address"]
+        headers = ["ID", "Name", "DoB", "NID", "Email", "Phone no.", "Gender", "Father's Name", "Mother's Name", "Marital Status", "Department", "Designation", "Nationality", "Joining Date", "Present Address", "Permanent Address"]
         dataRow = []
         if flag == "single":
             item = data
-            dataRow.append([item._employee_id, item._name, item._date_of_birth, item._nid, item._email, item._phone_no, item._gender, item._dept, item._designation, item._marital_status, item._present_address])
+            dataRow.append(item)
             return tabulate(dataRow, headers=headers, tablefmt="fancy_grid")  
         else:   
             for item in data:
-                dataRow.append([item._employee_id, item._name, item._date_of_birth, item._nid, item._email, item._phone_no, item._gender, item._dept, item._designation, item._marital_status, item._present_address])
+                dataRow.append(item)
             return tabulate(dataRow, headers=headers, tablefmt="fancy_grid")  
 
     def getAllEmployees(self):
-        emp = self._employees
-        return self.printDataTable(emp, "multiple")
+        employees = get_all_employee()
+        return self.printDataTable(employees, "multiple")
     
     def searchAnEmployee(self, input_text):
-        search_result = []
-        for item in self._employees:
-            if input_text == item._employee_id or input_text.lower() in item._name.lower() or input_text in item._date_of_birth or input_text == item._nid or input_text.lower() in item._email or input_text in item._phone_no or input_text.lower() in item._gender.lower() or input_text.lower() in item._father_name.lower() or input_text.lower() in item._mother_name.lower() or input_text.lower() in item._marital_status.lower() or input_text.lower() in item._dept.lower() or input_text.lower() in item._designation.lower() or input_text.lower() in item._nationality.lower() or input_text in item._joining_date or input_text.lower() in item._present_address.lower() or input_text.lower() in item._permanent_address.lower():
-                search_result.append(item)
-        if len(search_result) == 0:
-            return "⚠️  Employee not found!"
+        search_result = search_employee(input_text)
+        if search_result is None or len(search_result) == 0:
+            print("⚠️  Employee not found!")
+            return None
         else: 
             print(self.printDataTable(search_result, "multiple")) 
             return search_result   

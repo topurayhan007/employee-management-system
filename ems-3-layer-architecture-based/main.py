@@ -37,19 +37,21 @@ help: Help \n"""
 
             case "3":
                 search_input = input("=> Search for employee: ")
-                employees.searchAnEmployee(search_input)
+                employees.searchAnEmployee(search_input.strip())
 
             case "4":
                 print("=> Update operation selected: ")
                 search_input = input("=> Search for employee: ")
                 search_result = employees.searchAnEmployee(search_input.strip())
-                employees.selectEmployeeAndPerformUpdateOrDelete(search_result, "update")
+                if search_result is not None:
+                    employees.selectEmployeeAndPerformUpdateOrDelete(search_result, "update")
 
             case "5":
                 print("=> Delete operation selected:")
                 search_input = input("=> Search for employee: ")
                 search_result = employees.searchAnEmployee(search_input.strip())
-                employees.selectEmployeeAndPerformUpdateOrDelete(search_result, "delete")
+                if search_result is not None:
+                    employees.selectEmployeeAndPerformUpdateOrDelete(search_result, "delete")
                 
             case "6":
                 print("Exiting the app....")
