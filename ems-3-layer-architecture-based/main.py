@@ -33,7 +33,7 @@ help: Help \n"""
 
             case "2":
                 print("=> All Employee Details:")
-                print(employees.getAllEmployees())
+                employees.getAllEmployees()
 
             case "3":
                 search_input = input("=> Search for employee: ")

@@ -11,10 +11,6 @@ get_all_employee_query = (
     "SELECT * FROM employees "
 )
 
-delete_an_employee_query = (
-    "DELETE FROM employees WHERE employee_id=%s;"
-)
-
 search_employee_query = (
     "SELECT * FROM employees WHERE "
     "name LIKE %s OR "
@@ -32,6 +28,10 @@ search_employee_query = (
     "joining_date LIKE %s OR "
     "present_address LIKE %s OR "
     "permanent_address LIKE %s"
+)
+
+delete_an_employee_query = (
+    "DELETE FROM employees WHERE employee_id=%s;"
 )
 
 def add_employee(employee:Employee):
@@ -115,7 +115,9 @@ def delete_an_employee(employee_id):
     cursor.execute(f"USE {DB_NAME}")
 
     try:
-        result = cursor.execute(delete_an_employee_query)
+        cursor.execute(delete_an_employee_query, (employee_id,))
+        db_connection.commit()
+        result = cursor.rowcount
         cursor.close()
         db_connection.close()
         return result

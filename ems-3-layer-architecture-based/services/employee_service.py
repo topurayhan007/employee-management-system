@@ -58,20 +58,25 @@ class EmployeeService:
             
 
     def printDataTable(self, data, flag):
-        headers = ["ID", "Name", "DoB", "NID", "Email", "Phone no.", "Gender", "Father's Name", "Mother's Name", "Marital Status", "Department", "Designation", "Nationality", "Joining Date", "Present Address", "Permanent Address"]
+        headers = ["ID", "Name", "DoB", "NID", "Email", "Phone no.", "Gender", "Marital Status", "Department", "Designation", "Joining Date", "Present Address"]
         dataRow = []
         if flag == "single":
             item = data
-            dataRow.append([item['employee_id'], item['name'], item['date_of_birth'], item['nid'], item['email'], item['phone_no'], item['gender'], item['dept'], item['designation'], item['marital_status'], item['present_address']])
+            dataRow.append([item['employee_id'], item['name'], item['date_of_birth'], item['nid'], item['email'], item['phone_no'], item['gender'], item['marital_status'], item['dept'], item['designation'], item['joining_date'], item['present_address']])
             return tabulate(dataRow, headers=headers, tablefmt="fancy_grid")  
         else:   
             for item in data:
-                dataRow.append([item['employee_id'], item['name'], item['date_of_birth'], item['nid'], item['email'], item['phone_no'], item['gender'], item['dept'], item['designation'], item['marital_status'], item['present_address']])
+                dataRow.append([item['employee_id'], item['name'], item['date_of_birth'], item['nid'], item['email'], item['phone_no'], item['gender'], item['marital_status'], item['dept'], item['designation'], item['joining_date'], item['present_address']])
             return tabulate(dataRow, headers=headers, tablefmt="fancy_grid")  
 
     def getAllEmployees(self):
         employees = get_all_employee()
-        return self.printDataTable(employees, "multiple")
+        if employees is None or len(employees) == 0:
+            print("⚠️  No data found!")
+            return None
+        else: 
+            print(self.printDataTable(employees, "multiple"))
+            return employees
     
     def searchAnEmployee(self, input_text):
         search_result = search_employee(input_text)
@@ -107,8 +112,7 @@ class EmployeeService:
         print("✅ Employee updated successfully!") 
     
     def deleteAnEmployee(self, employee):
-        print("es", employee)
-        # delete_an_employee(employee)
+        delete_an_employee(employee['employee_id'])
         print("✅ Employee deleted successfully!") 
 
 
@@ -121,7 +125,7 @@ class EmployeeService:
                 while True:
                     emp_id = input(f"Type the employee ID you want to {action} from the above result: ")
                     for item in search_result:
-                        if item._employee_id == emp_id:
+                        if item['employee_id'] == int(emp_id):
                             selected_emp = item
                             break
                     if selected_emp is not None:
