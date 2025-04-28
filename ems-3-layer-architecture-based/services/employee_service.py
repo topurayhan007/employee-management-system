@@ -2,7 +2,7 @@ from models.education import EducationalDegree
 from models.experience import Experience
 from models.employee import Employee
 from services.input_validation_service import InputValidator
-from tabulate import tabulate
+from services.display_service import print_employee_table
 from services.education_service import EducationService
 from services.experience_service import ExperienceService
 from database.employee_db import add_employee, get_all_employee, search_employee, delete_an_employee, update_an_employee
@@ -15,12 +15,6 @@ class EmployeeService:
 
     def __init__(self):
         self._employees = []
-
-    def validate_unique_id(self, input):
-        for item in self._employees:
-            if item._employee_id == input:
-                return False
-        return True
 
     def add_an_employee(self):
         _name = self.validator.get_input_and_validate(str, "Enter name: ")
@@ -57,25 +51,13 @@ class EmployeeService:
             print("Something went wrong")
             
 
-    def printDataTable(self, data, flag):
-        headers = ["ID", "Name", "DoB", "NID", "Email", "Phone no.", "Gender", "Marital Status", "Department", "Designation", "Joining Date", "Present Address"]
-        dataRow = []
-        if flag == "single":
-            item = data
-            dataRow.append([item['employee_id'], item['name'], item['date_of_birth'], item['nid'], item['email'], item['phone_no'], item['gender'], item['marital_status'], item['dept'], item['designation'], item['joining_date'], item['present_address']])
-            return tabulate(dataRow, headers=headers, tablefmt="fancy_grid")  
-        else:   
-            for item in data:
-                dataRow.append([item['employee_id'], item['name'], item['date_of_birth'], item['nid'], item['email'], item['phone_no'], item['gender'], item['marital_status'], item['dept'], item['designation'], item['joining_date'], item['present_address']])
-            return tabulate(dataRow, headers=headers, tablefmt="fancy_grid")  
-
     def getAllEmployees(self):
         employees = get_all_employee()
         if employees is None or len(employees) == 0:
             print("⚠️  No data found!")
             return None
         else: 
-            print(self.printDataTable(employees, "multiple"))
+            print(print_employee_table(employees, "multiple"))
             return employees
     
     def searchAnEmployee(self, input_text):
@@ -84,13 +66,13 @@ class EmployeeService:
             print("⚠️  Employee not found!")
             return None
         else: 
-            print(self.printDataTable(search_result, "multiple")) 
+            print(print_employee_table(search_result, "multiple")) 
             return search_result   
             
     def updateEmployeeFields(self, data):
         item = data
         print("=> Employee selected: ")
-        print(self.printDataTable(item, "single"))
+        print(print_employee_table(item, "single"))
         print("These are the fields you can update: ")
         print("Name, Date of Birth, NID, Email, Phone Number, Gender, Father's Name, Mother's Name, Marital Status, Department, Designation, Nationality, Joining Date, Present Address, Permanent Address")
         fields = input("From the above fields type the fields you want to update separated by commas: ")
@@ -129,7 +111,7 @@ class EmployeeService:
                 item['permanent_address'] = self.validator.get_input_and_validate(str, "Enter new permanent address: ")
             else:
                 print("⚠️  You entered an invalid field, skipping this field...")
-        # Update DB
+        
         update_an_employee(item)
         print("✅ Employee updated successfully!") 
     
