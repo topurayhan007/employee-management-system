@@ -24,7 +24,7 @@ class EmployeeService:
 
     def add_an_employee(self):
         _name = self.validator.get_input_and_validate(str, "Enter name: ")
-        _date_of_birth = self.validator.get_input_and_validate(str, "Enter date of birth (DD-MM-YYYY): ", self.validator.validate_date, "⚠️  Invalid date format")
+        _date_of_birth = self.validator.get_input_and_validate(str, "Enter date of birth (YYYY-MM-DD): ", self.validator.validate_date, "⚠️  Invalid date format")
         _nid = self.validator.get_input_and_validate(int, "Enter NID no: ", self.validator.validate_nid, "⚠️  NID should be between 10 and 17 digits")
         _email = self.validator.get_input_and_validate(str, "Enter email address: ", self.validator.validate_email, "⚠️  Invalid email format")
         _phone_no = self.validator.get_input_and_validate(str, "Enter phone no: ", self.validator.validate_phone_number, "⚠️  Phone no. should be 11 digits")
@@ -35,7 +35,7 @@ class EmployeeService:
         _dept = self.validator.get_input_and_validate(str, "Enter department name: ")
         _designation = self.validator.get_input_and_validate(str, "Enter designation: ")
         _nationality = self.validator.get_input_and_validate(str, "Enter nationality: ")
-        _joining_date = self.validator.get_input_and_validate(str, "Enter joining date (DD-MM-YYYY): ", self.validator.validate_date, "⚠️  Invalid date format")
+        _joining_date = self.validator.get_input_and_validate(str, "Enter joining date (YYYY-MM-DD): ", self.validator.validate_date, "⚠️  Invalid date format")
         _present_address = self.validator.get_input_and_validate(str, "Enter present address: ")
         _permanent_address = self.validator.get_input_and_validate(str, "Enter permanent address: ")
 
@@ -44,6 +44,7 @@ class EmployeeService:
         # insert into DB
         _employee_id = add_employee(employee)
         if _employee_id is not None:
+            print(f"✅ Employee with ID: {_employee_id} added successfully")
             no_of_degrees = int(input("How many educational degress do you want to add? => "))
             for i in range(no_of_degrees):
                 self.education_service.add_educational_degree(_employee_id)

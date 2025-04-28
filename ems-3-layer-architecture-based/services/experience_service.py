@@ -1,7 +1,7 @@
 # All CRUD operations of Experience
 from models.experience import Experience
 from services.input_validation_service import InputValidator
-from database.experience_db import add
+from database.experience_db import add_experience
 
 class ExperienceService:
     validator = InputValidator()
@@ -15,13 +15,19 @@ class ExperienceService:
     def add_experience(self, _employee_id):
         _company_name = self.validator.get_input_and_validate(str, "Enter company's name: ")
         _position = self.validator.get_input_and_validate(str, "Enter the job title: ")
-        _joining_date = self.validator.get_input_and_validate(str, "Enter joining date (DD-MM-YYYY): ", self.validator.validate_date, "⚠️  Invalid date format")
-        _ending_date = self.validator.get_input_and_validate(str, "Enter leaving date (DD-MM-YYYY): ", self.validator.validate_date, "⚠️  Invalid date format")
+        _joining_date = self.validator.get_input_and_validate(str, "Enter joining date (YYYY-MM-DD): ", self.validator.validate_date, "⚠️  Invalid date format")
+        _ending_date = self.validator.get_input_and_validate(str, "Enter leaving date (YYYY-MM-DD): ", self.validator.validate_date, "⚠️  Invalid date format")
         _location = self.validator.get_input_and_validate(str, "Enter company's location: ")
     
         experience = Experience(_employee_id, _company_name, _position, _joining_date, _ending_date, _location)
         # Insert into the DB
-        
+
+        experience_id = add_experience(experience)
+
+        if experience_id is not None:
+            print("Saved into database!")
+        else:
+            print("Something went wrong!")        
 
     def delete_experience(self, experience_id):
         pass

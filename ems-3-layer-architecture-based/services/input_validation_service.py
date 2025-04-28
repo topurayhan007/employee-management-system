@@ -21,7 +21,7 @@ class InputValidator:
                 print("⚠️  Invalid input, please try again")
 
     def validate_date(self, input):
-        format = "%d-%m-%Y"
+        format = "%Y-%m-%d"
         return datetime.strptime(input, format)
     
     def validate_email(self, input):

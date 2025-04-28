@@ -17,7 +17,12 @@ class EducationService:
 
         degree = EducationalDegree(_employee_id, _degree_name, _institute_name, _major, _location, _gpa, _gpa_scale, _year_of_passing)
         # Insert into DB by calling the method
-    
+        degree_id = add_degree(degree)
+
+        if degree_id is not None:
+            print("✅ Saved into database!")
+        else:
+            print("⚠️  Couldn't add to database!")
 
     def delete_educational_degree(self, degree_id):
         pass

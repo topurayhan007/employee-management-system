@@ -1,7 +1,11 @@
 # This is a console based application made using 3-layer architecture
 from services.employee_service import EmployeeService
+from database.setup import initialize_database
 
 def main():
+    # Initialize database
+    initialize_database()
+
     print("====================================")
     print("||   Employee Management System   ||")
     print("==================================== \n")

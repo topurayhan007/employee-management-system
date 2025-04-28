@@ -10,9 +10,27 @@ add_employee_query = (
 def add_employee(employee:Employee):
     db_connection = get_db_connection()
     cursor = db_connection.cursor()
+    cursor.execute("USE ems")
 
     try:
-        cursor.execute(add_employee_query, employee)
+        employee_data = (
+            employee._name,
+            employee._date_of_birth,
+            employee._nid,
+            employee._email,
+            employee._phone_no,
+            employee._gender,
+            employee._father_name,
+            employee._mother_name,
+            employee._marital_status,
+            employee._dept,
+            employee._designation,
+            employee._nationality,
+            employee._joining_date,
+            employee._present_address,
+            employee._permanent_address,
+        )
+        cursor.execute(add_employee_query, employee_data)
         emp_id = cursor.lastrowid
         db_connection.commit()
         cursor.close()

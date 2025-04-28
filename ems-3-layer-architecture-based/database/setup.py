@@ -60,10 +60,6 @@ TABLES['degrees'] = (
     "  `year_of_passing` year NOT NULL"
     ") ENGINE=InnoDB")
 
-# Establish database connection
-db_connection = mysql.connector.connect(**config)
-cursor = db_connection.cursor()
-
 # Create database
 def create_database(cursor):
     try:
@@ -73,33 +69,42 @@ def create_database(cursor):
         print("Failed creating database: {}".format(err))
         exit(1)
 
-try:
-    cursor.execute("USE {}".format(DB_NAME))
-except mysql.connector.Error as err:
-    print("Database {} does not exists.".format(DB_NAME))
-    if err.errno == errorcode.ER_BAD_DB_ERROR:
-        create_database(cursor)
-        print("Database {} created successfully.".format(DB_NAME))
-        db_connection.database = DB_NAME
-    else:
-        print(err)
+# Initialize Database and make tables
+def initialize_database():
+    try:
+        db_connection = mysql.connector.connect(**config)
+        cursor = db_connection.cursor()
+
+        try:
+            cursor.execute(f"USE {DB_NAME}")
+        except mysql.connector.Error as err:
+            print(f"Database {DB_NAME} does not exist.")
+            if err.errno == errorcode.ER_BAD_DB_ERROR:
+                create_database(cursor)
+                print(f"Database {DB_NAME} created successfully.")
+                db_connection.database = DB_NAME
+            else:
+                print(err)
+                exit(1)
+
+        for table_name, table_description in TABLES.items():
+            try:
+                print(f"Creating table {table_name}: ", end='')
+                cursor.execute(table_description)
+                print("OK")
+            except mysql.connector.Error as err:
+                if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
+                    print("already exists.")
+                else:
+                    print(err.msg)
+
+        cursor.close()
+        db_connection.close()
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
         exit(1)
 
-for table_name in TABLES:
-    table_description = TABLES[table_name]
-    try:
-        print("Creating table {}: ".format(table_name), end='')
-        cursor.execute(table_description)
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
-            print("already exists.")
-        else:
-            print(err.msg)
-    else:
-        print("OK")
 
 def get_db_connection():
     return mysql.connector.connect(**config)
-
-cursor.close()
-db_connection.close()
