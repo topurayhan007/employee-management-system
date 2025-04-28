@@ -34,6 +34,26 @@ delete_an_employee_query = (
     "DELETE FROM employees WHERE employee_id=%s;"
 )
 
+update_an_employee_query = (
+    "UPDATE employees SET "
+    "name=%s, "
+    "date_of_birth=%s, "
+    "nid=%s, "
+    "email=%s, "
+    "phone_no=%s, "
+    "gender=%s, "
+    "father_name=%s, "
+    "mother_name=%s, "
+    "marital_status=%s, "
+    "dept=%s, "
+    "designation=%s, "
+    "nationality=%s, "
+    "joining_date=%s, "
+    "present_address=%s, "
+    "permanent_address=%s "
+    "WHERE employee_id=%s"
+)
+
 def add_employee(employee:Employee):
     db_connection = get_db_connection()
     cursor = db_connection.cursor()
@@ -116,6 +136,44 @@ def delete_an_employee(employee_id):
 
     try:
         cursor.execute(delete_an_employee_query, (employee_id,))
+        db_connection.commit()
+        result = cursor.rowcount
+        cursor.close()
+        db_connection.close()
+        return result
+    
+    except db_connection.Error as err:
+        print(err.msg)
+        cursor.close()
+        db_connection.close()
+        return None
+    
+def update_an_employee(employee):
+    db_connection = get_db_connection()
+    cursor = db_connection.cursor()
+    cursor.execute(f"USE {DB_NAME}")
+
+    try:
+        update_employee_data = (
+            employee['name'],
+            employee['date_of_birth'],
+            employee['nid'],
+            employee['email'],
+            employee['phone_no'],
+            employee['gender'],
+            employee['father_name'],
+            employee['mother_name'],
+            employee['marital_status'],
+            employee['dept'],
+            employee['designation'],
+            employee['nationality'],
+            employee['joining_date'],
+            employee['present_address'],
+            employee['permanent_address'],
+            employee['employee_id']
+        )
+
+        cursor.execute(update_an_employee_query, update_employee_data)
         db_connection.commit()
         result = cursor.rowcount
         cursor.close()
