@@ -72,12 +72,13 @@ def add_employee(employee:Employee):
     
 def get_all_employee():
     db_connection = get_db_connection()
-    cursor = db_connection.cursor()
+    cursor = db_connection.cursor(dictionary=True)
     cursor.execute(f"USE {DB_NAME}")
 
     try:
         cursor.execute(get_all_employee_query)
         all_employees = cursor.fetchall()
+        
         cursor.close()
         db_connection.close()
         return all_employees
@@ -90,7 +91,7 @@ def get_all_employee():
     
 def search_employee(search_text):
     db_connection = get_db_connection()
-    cursor = db_connection.cursor()
+    cursor = db_connection.cursor(dictionary=True)
     cursor.execute(f"USE {DB_NAME}")
 
     params = tuple(["%" + search_text + "%"] * 15)

@@ -62,11 +62,11 @@ class EmployeeService:
         dataRow = []
         if flag == "single":
             item = data
-            dataRow.append(item)
+            dataRow.append([item['employee_id'], item['name'], item['date_of_birth'], item['nid'], item['email'], item['phone_no'], item['gender'], item['dept'], item['designation'], item['marital_status'], item['present_address']])
             return tabulate(dataRow, headers=headers, tablefmt="fancy_grid")  
         else:   
             for item in data:
-                dataRow.append(item)
+                dataRow.append([item['employee_id'], item['name'], item['date_of_birth'], item['nid'], item['email'], item['phone_no'], item['gender'], item['dept'], item['designation'], item['marital_status'], item['present_address']])
             return tabulate(dataRow, headers=headers, tablefmt="fancy_grid")  
 
     def getAllEmployees(self):
@@ -107,7 +107,8 @@ class EmployeeService:
         print("✅ Employee updated successfully!") 
     
     def deleteAnEmployee(self, employee):
-        self._employees.remove(employee)
+        print("es", employee)
+        # delete_an_employee(employee)
         print("✅ Employee deleted successfully!") 
 
 
