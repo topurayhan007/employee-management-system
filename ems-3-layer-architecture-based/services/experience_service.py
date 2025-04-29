@@ -40,7 +40,11 @@ class ExperienceService:
             return experiences
 
     def delete_experience(self, experience_id):
-        raise NotImplementedError
+        result = delete_an_experience_of_an_employee(experience_id)
+        if result == 1:
+            print("✅ Experience deleted from database!")
+        else:
+            print("⚠️  Couldn't delete from database!")
 
     
     def update_experience(self, experience_id):

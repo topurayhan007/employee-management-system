@@ -36,7 +36,11 @@ class EducationService:
 
 
     def delete_educational_degree(self, degree_id):
-        raise NotImplementedError
+        result = delete_a_degree_of_an_employee(degree_id)
+        if result == 1:
+            print("✅ Educational degree deleted from database!")
+        else:
+            print("⚠️  Couldn't delete from database!")
 
     def update_educational_degree(self, degree_id):
         raise NotImplementedError

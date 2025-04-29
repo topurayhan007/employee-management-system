@@ -78,12 +78,18 @@ help: Help \n"""
                 choice_input = input("=> Type degree/experience that you want to update of an employee: ")
                 if choice_input.strip().lower() in "Degree".lower():
                     employee_id = input("=> Type the employee ID: ")
-                    # selection option
-                    education_service.update_educational_degree(employee_id)
+                    degrees = education_service.search_educational_degrees_of_an_employee(employee_id)
+                    if degrees is not None:
+                        degree_id = int(input("Type the ID that you want to update: "))
+                        education_service.update_educational_degree(degree_id)
+
                 elif choice_input.strip().lower() in "Experience".lower():
                     employee_id = input("=> Type the employee ID: ")
-                    # selection option
-                    experience_service.update_experience(employee_id)
+                    experiences = experience_service.search_experience(employee_id)
+                    if experiences is not None:
+                        experience_id = int(input("Type the ID that you want to update: "))
+                        experience_service.update_experience(experience_id)
+
                 else:
                     print("⚠️  Invalid, please try again!")
                     pass
@@ -93,12 +99,18 @@ help: Help \n"""
                 choice_input = input("=> Type degree/experience that you want to update of an employee: ")
                 if choice_input.strip().lower() in "Degree".lower():
                     employee_id = input("=> Type the employee ID: ")
-                    # selection option
-                    education_service.delete_educational_degree(employee_id)
+                    degrees = education_service.search_educational_degrees_of_an_employee(employee_id)
+                    if degrees is not None:
+                        degree_id = int(input("Type the ID that you want to delete: "))
+                        education_service.delete_educational_degree(degree_id)
+
                 elif choice_input.strip().lower() in "Experience".lower():
                     employee_id = input("=> Type the employee ID: ")
-                    # selection option
-                    experience_service.delete_experience(employee_id)
+                    experiences = experience_service.search_experience(employee_id)
+                    if experiences is not None:
+                        experience_id = int(input("Type the ID that you want to delete: "))
+                        experience_service.delete_experience(experience_id)
+                        
                 else:
                     print("⚠️  Invalid, please try again!")
                     pass
