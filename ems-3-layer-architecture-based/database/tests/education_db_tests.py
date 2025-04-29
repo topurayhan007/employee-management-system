@@ -35,16 +35,15 @@ updated_degree = {
 }
 
 result = add_degree(degree)
+print(1, result)
 
 result2 = search_degrees_of_an_employee(2)
-
-result3 = delete_a_degree_of_an_employee(1)
-
-result4 = update_a_degree_of_an_employee(updated_degree)
-
-print(1, result)
 print(2, result2)
+
+result3 = update_a_degree_of_an_employee(updated_degree)
 print(3, result3)
+
+result4 = delete_a_degree_of_an_employee(8)
 print(4, result4)
 
 

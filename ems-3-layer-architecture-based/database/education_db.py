@@ -21,7 +21,7 @@ update_a_degree_of_an_employee_query = (
     "location=%s, " 
     "gpa=%s, " 
     "gpa_scale=%s, " 
-    "year_of_passing=%s, "
+    "year_of_passing=%s "
     "WHERE degree_id=%s"
 )
 
@@ -66,7 +66,7 @@ def search_degrees_of_an_employee(employee_id):
     cursor.execute(f"USE {DB_NAME}")
 
     try:
-        cursor.execute(search_degrees_of_an_employee_query, employee_id)
+        cursor.execute(search_degrees_of_an_employee_query, (employee_id,))
         result = cursor.fetchall()        
         cursor.close()
         db_connection.close()
@@ -104,7 +104,6 @@ def update_a_degree_of_an_employee(degree):
 
     try:
         updated_degree_data = (
-            degree['name'],
             degree['employee_id'],
             degree['degree_name'],
             degree['institute_name'],
@@ -112,7 +111,8 @@ def update_a_degree_of_an_employee(degree):
             degree['location'],
             degree['gpa'],
             degree['gpa_scale'],
-            degree['year_of_passing']
+            degree['year_of_passing'],
+            degree['degree_id']
         )
 
         cursor.execute(update_a_degree_of_an_employee_query, updated_degree_data)
