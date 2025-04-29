@@ -18,7 +18,7 @@ def main():
 3.  Find employee
 4.  Update an employee
 5.  Delete an employee
-6.  Add degree/experience of an employee
+6.  Add degree/experience to an employee
 7.  Find degrees/experiences of an employee
 8.  Update degree/experience of an employee
 9.  Delete degree/experience of an employee
