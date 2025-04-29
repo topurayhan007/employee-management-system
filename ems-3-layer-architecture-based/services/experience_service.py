@@ -47,5 +47,38 @@ class ExperienceService:
             print("⚠️  Couldn't delete from database!")
 
     
-    def update_experience(self, experience_id):
-        raise NotImplementedError
+    def update_experience_fields_and_put_into_db(self, data):
+        item = data
+        print("=> Experience selected:")
+        print(print_experience_table(item, "single"))
+        print("These are the fields you can update: ")
+        print("Company Name, Position, Joining Date, Ending Date, Location")
+        fields = input("From the above fields type the fields you want to update separated by commas: ")
+        fields = fields.split(",")  
+
+        for field in fields:
+            if field.strip().lower() in "Company Name".lower():
+                item['company_name'] = self.validator.get_input_and_validate(str, "Enter new company's name: ")
+            elif field.strip().lower() in "Position".lower():
+                item['position'] = self.validator.get_input_and_validate(str, "Enter new job title: ")
+            elif field.strip().lower() in "Joining Date".lower():
+                item['joining_date'] = self.validator.get_input_and_validate(str, "Enter new joining date (YYYY-MM-DD): ", self.validator.validate_date, "⚠️  Invalid date format")
+            elif field.strip().lower() in "Ending Date".lower():
+                item['ending_date'] = self.validator.get_input_and_validate(str, "Enter new leaving date (YYYY-MM-DD): ", self.validator.validate_date, "⚠️  Invalid date format")
+            elif field.strip().lower() in "Location".lower():
+                item['location'] = self.validator.get_input_and_validate(str, "Enter new company's location: ")
+            else:
+                print("⚠️  You entered an invalid field, skipping this field...")
+
+        result = update_an_experience_of_an_employee(item)
+        if result == 1:
+            print("✅ Experience updated successfully!") 
+        else:
+            print("✅ Couldn't update experience, please try again!")
+
+
+    def update_experience(self, experiences, experience_id):
+        for item in experiences:
+            if item['experience_id'] == experience_id:
+                self.update_experience_fields_and_put_into_db(item)
+
