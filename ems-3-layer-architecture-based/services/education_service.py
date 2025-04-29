@@ -1,7 +1,8 @@
 # All CRUD operations of Education
 from models.education import EducationalDegree
 from services.input_validation_service import InputValidator
-from database.education_db import add_degree
+from services.display_service import print_degree_table
+from database.education_db import add_degree, search_degrees_of_an_employee, update_a_degree_of_an_employee, delete_a_degree_of_an_employee
 
 class EducationService:
     validator = InputValidator()
@@ -24,9 +25,20 @@ class EducationService:
         else:
             print("⚠️  Couldn't add to database!")
 
+    def search_educational_degrees_of_an_employee(self, employee_id):
+        degrees = search_degrees_of_an_employee(employee_id)
+        if degrees is None or len(degrees) == 0:
+            print("⚠️  No educational degrees found for the employee!")
+            return None
+        else: 
+            print(print_degree_table(degrees, "multiple"))
+            return degrees
+
+
     def delete_educational_degree(self, degree_id):
-        pass
+        raise NotImplementedError
 
     def update_educational_degree(self, degree_id):
-        pass
+        raise NotImplementedError
+
     

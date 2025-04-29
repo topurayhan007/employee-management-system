@@ -1,5 +1,3 @@
-from models.education import EducationalDegree
-from models.experience import Experience
 from models.employee import Employee
 from services.input_validation_service import InputValidator
 from services.display_service import print_employee_table
