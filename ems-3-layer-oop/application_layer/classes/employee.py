@@ -1,7 +1,7 @@
 # Employee Class
 class Employee:
-    def __init__(self, _name, _date_of_birth, _nid, _email, _phone_no, _gender, _father_name, _mother_name, _marital_status, _dept, _designation, _nationality, _joining_date, _present_address, _permanent_address):
-        self._employee_id = None
+    def __init__(self, _employee_id: None, _name, _date_of_birth, _nid, _email, _phone_no, _gender, _father_name, _mother_name, _marital_status, _dept, _designation, _nationality, _joining_date, _present_address, _permanent_address):
+        self._employee_id = _employee_id
         self._name = _name
         self._date_of_birth = _date_of_birth
         self._nid = _nid

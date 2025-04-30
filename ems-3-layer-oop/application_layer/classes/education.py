@@ -1,6 +1,6 @@
 class EducationalDegree:
-    def __init__(self, _employee_id, _degree_name, _institute_name, _major, _location, _gpa, _gpa_scale, _year_of_passing):
-        self._degree_id = None
+    def __init__(self, _degree_id: None, _employee_id, _degree_name, _institute_name, _major, _location, _gpa, _gpa_scale, _year_of_passing):
+        self._degree_id = _degree_id
         self._employee_id = _employee_id
         self._degree_name = _degree_name
         self._institute_name = _institute_name 

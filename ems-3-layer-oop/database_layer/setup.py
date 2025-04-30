@@ -1,6 +1,4 @@
 # Initialize database, set connection, create tables
-import os
-from dotenv import load_dotenv
 import mysql.connector
 from mysql.connector import errorcode
 
@@ -104,6 +102,7 @@ class DatabaseManager:
             if db_connection is not None:
                 db_connection.close()
 
+    # Get DB connection when needed by any file to perform DB operations
     def get_db_connection(self):
         return mysql.connector.connect(**self.config)
 
