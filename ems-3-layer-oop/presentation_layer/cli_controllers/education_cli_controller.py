@@ -19,11 +19,10 @@ class EducationCliController:
         _year_of_passing = self.validator.get_input_and_validate(str, "Enter year of passing (YYYY): ", self.validator.validate_year, "⚠️  Invalid year format")
 
         degree = EducationalDegree(None, _employee_id, _degree_name, _institute_name, _major, _location, _gpa, _gpa_scale, _year_of_passing)
-        # Insert into DB by calling the method
         degree_id = self.education_service.add_degree(degree)
 
         if degree_id is not None:
-            print("✅ Saved into database!")
+            print("✅ Educational degree saved into database!")
         else:
             print("⚠️  Couldn't add to database!")
 
@@ -44,8 +43,8 @@ class EducationCliController:
         else:
             print("⚠️  Couldn't delete from database!")
 
-    def update_degree_fields_and_put_into_db(self, data):
-        item = data
+    def update_degree_fields_and_put_into_db(self, degree):
+        item = degree
         print("=> Degree selected:")
         print(self.printer.print_degree_table(item, "single"))
         print("These are the fields you can update: ")
@@ -55,19 +54,19 @@ class EducationCliController:
 
         for field in fields:
             if field.strip().lower() in "Degree Name".lower():
-                item['degree_name'] = self.validator.get_input_and_validate(str, "Enter new degree name: ")
+                item._degree_name  = self.validator.get_input_and_validate(str, "Enter new degree name: ")
             elif field.strip().lower() in "Institute Name".lower():
-                item['institute_name'] = self.validator.get_input_and_validate(str, "Enter new institute name: ")
+                item._institute_name  = self.validator.get_input_and_validate(str, "Enter new institute name: ")
             elif field.strip().lower() in "Major".lower():
-                item['major'] = self.validator.get_input_and_validate(str, "Enter new major: ")
+                item._major  = self.validator.get_input_and_validate(str, "Enter new major: ")
             elif field.strip().lower() in "Location".lower():
-                item['location'] = self.validator.get_input_and_validate(str, "Enter new location: ")
+                item._location  = self.validator.get_input_and_validate(str, "Enter new location: ")
             elif field.strip().lower() in "GPA".lower():
-                item['gpa'] = self.validator.get_input_and_validate(float, "Enter new gpa: ")
+                item._gpa  = self.validator.get_input_and_validate(float, "Enter new gpa: ")
             elif field.strip().lower() in "GPA Scale".lower():
-                item['gpa_scale'] = self.validator.get_input_and_validate(float, "Enter new gpa scale: ")
+                item._gpa_scale  = self.validator.get_input_and_validate(float, "Enter new gpa scale: ")
             elif field.strip().lower() in "Year of Passing".lower():
-                item['year_of_passing'] = self.validator.get_input_and_validate(str, "Enter new year of passing (YYYY): ", self.validator.validate_year, "⚠️  Invalid year format")
+                item._year_of_passing  = self.validator.get_input_and_validate(str, "Enter new year of passing (YYYY): ", self.validator.validate_year, "⚠️  Invalid year format")
             else:
                 print("⚠️  You entered an invalid field, skipping this field...")
 
@@ -77,8 +76,8 @@ class EducationCliController:
         else:
             print("✅ Couldn't update degree, please try again!") 
 
-    def update_educational_degree(self, degrees, degree_id):
+    def update_educational_degree(self, degrees: list[EducationalDegree], degree_id):
         for item in degrees:
-            if item['degree_id'] == degree_id:
+            if item._degree_id == degree_id:
                 self.update_degree_fields_and_put_into_db(item)
 
