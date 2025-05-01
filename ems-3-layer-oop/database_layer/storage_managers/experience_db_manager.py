@@ -131,13 +131,13 @@ class ExperienceDBManager:
         experiences: list[Experience] = []
         for row in data:
             experience = Experience(
-                experience['experience_id'],
-                experience['employee_id'],
-                experience['company_name'],
-                experience['position'],
-                experience['joining_date'],
-                experience['ending_date'],
-                experience['location']
+                row['experience_id'],
+                row['employee_id'],
+                row['company_name'],
+                row['position'],
+                row['joining_date'],
+                row['ending_date'],
+                row['location']
             )
             experiences.append(experience)
         return experiences
