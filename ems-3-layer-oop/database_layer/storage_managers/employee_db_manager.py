@@ -5,10 +5,10 @@ from database_layer.setup import DatabaseManager
 class EmployeeDBManager:
     def __init__(self, db_manager: DatabaseManager):
         self.db_manager = db_manager
-        self.db_connection = db_manager.get_db_connection()
 
     def add_employee(self, employee:Employee):
-        cursor = self.db_connection.cursor()
+        db_connection = self.db_manager.get_db_connection()
+        cursor = db_connection.cursor()
         query = (
             "INSERT INTO employees "
             "(name, date_of_birth, nid, email, phone_no, gender, father_name, mother_name, marital_status, dept, designation, nationality, joining_date, present_address, permanent_address) "
@@ -19,19 +19,20 @@ class EmployeeDBManager:
         try:
             cursor.execute(query, employee_data)
             emp_id = cursor.lastrowid
-            self.db_connection.commit()
+            db_connection.commit()
             cursor.close()
-            self.db_connection.close()
+            db_connection.close()
             return emp_id
         
-        except self.db_connection.Error as err:
+        except db_connection.Error as err:
             print(err.msg)
             cursor.close()
-            self.db_connection.close()
+            db_connection.close()
             return None
         
     def get_all_employee(self):
-        cursor = self.db_connection.cursor(dictionary=True)
+        db_connection = self.db_manager.get_db_connection()
+        cursor = db_connection.cursor(dictionary=True)
         
         query = (
             "SELECT * FROM employees "
@@ -43,17 +44,18 @@ class EmployeeDBManager:
             employees = self.db_data_to_employee_list(result)
 
             cursor.close()
-            self.db_connection.close()
+            db_connection.close()
             return employees
         
-        except self.db_connection.Error as err:
+        except db_connection.Error as err:
             print(err.msg)
             cursor.close()
-            self.db_connection.close()
+            db_connection.close()
             return None
         
     def search_employee(self, search_text):
-        cursor = self.db_connection.cursor(dictionary=True)
+        db_connection = self.db_manager.get_db_connection()
+        cursor = db_connection.cursor(dictionary=True)
 
         params = tuple(["%" + search_text + "%"] * 15)
         query = (
@@ -81,17 +83,18 @@ class EmployeeDBManager:
             employees = self.db_data_to_employee_list(result)
 
             cursor.close()
-            self.db_connection.close()
+            db_connection.close()
             return employees
         
-        except self.db_connection.Error as err:
+        except db_connection.Error as err:
             print(err.msg)
             cursor.close()
-            self.db_connection.close()
+            db_connection.close()
             return None
 
     def delete_an_employee(self, employee_id):
-        cursor = self.db_connection.cursor()
+        db_connection = self.db_manager.get_db_connection()
+        cursor = db_connection.cursor()
 
         query = (
             "DELETE FROM employees WHERE employee_id=%s;"
@@ -99,20 +102,21 @@ class EmployeeDBManager:
         
         try:
             cursor.execute(query, (employee_id,))
-            self.db_connection.commit()
+            db_connection.commit()
             result = cursor.rowcount
             cursor.close()
-            self.db_connection.close()
+            db_connection.close()
             return result
         
-        except self.db_connection.Error as err:
+        except db_connection.Error as err:
             print(err.msg)
             cursor.close()
-            self.db_connection.close()
+            db_connection.close()
             return None
         
     def update_an_employee(self, employee: Employee):
-        cursor = self.db_connection.cursor()
+        db_connection = self.db_manager.get_db_connection()
+        cursor = db_connection.cursor()
         
         query = (
             "UPDATE employees SET "
@@ -138,17 +142,17 @@ class EmployeeDBManager:
 
         try:
             cursor.execute(query, updated_employee_data)
-            self.db_connection.commit()
+            db_connection.commit()
             result = cursor.rowcount
             
             cursor.close()
-            self.db_connection.close()
+            db_connection.close()
             return result
         
-        except self.db_connection.Error as err:
+        except db_connection.Error as err:
             print(err.msg)
             cursor.close()
-            self.db_connection.close()
+            db_connection.close()
             return None
 
     # Some helper methods

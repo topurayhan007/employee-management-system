@@ -43,7 +43,7 @@ class EducationCliController:
         else:
             print("⚠️  Couldn't delete from database!")
 
-    def update_degree_fields_and_put_into_db(self, degree):
+    def update_degree_fields_and_put_into_db(self, degree: EducationalDegree):
         item = degree
         print("=> Degree selected:")
         print(self.printer.print_degree_table(item, "single"))
