@@ -32,7 +32,7 @@ class EmployeeCliController:
         _present_address = self.validator.get_input_and_validate(str, "Enter present address: ")
         _permanent_address = self.validator.get_input_and_validate(str, "Enter permanent address: ")
 
-        employee = Employee(_name, _date_of_birth, _nid, _email, _phone_no, _gender, _father_name, _mother_name, _marital_status, _dept, _designation, _nationality, _joining_date, _present_address, _permanent_address)
+        employee = Employee(None, _name, _date_of_birth, _nid, _email, _phone_no, _gender, _father_name, _mother_name, _marital_status, _dept, _designation, _nationality, _joining_date, _present_address, _permanent_address)
         
         # Send to employee service to add employee
         _employee_id = self.employee_service.add_employee(employee)
@@ -62,7 +62,7 @@ class EmployeeCliController:
             return employees
     
     def searchAnEmployee(self, input_text):
-        search_result = self.search_employee(input_text)
+        search_result = self.employee_service.search_employee(input_text)
         if search_result is None or len(search_result) == 0:
             print("⚠️  Employee not found!")
             return None
@@ -70,8 +70,8 @@ class EmployeeCliController:
             print(self.printer.print_employee_table(search_result, "multiple")) 
             return search_result   
             
-    def updateEmployeeFields(self, data):
-        item = data
+    def updateEmployeeFields(self, employee):
+        item = employee
         print("=> Employee selected: ")
         print(self.printer.print_employee_table(item, "single"))
         print("These are the fields you can update: ")
@@ -81,35 +81,35 @@ class EmployeeCliController:
 
         for field in fields:
             if field.strip().lower() in "Name".lower():
-                item['name'] = self.validator.get_input_and_validate(str, "Enter new name: ")
+                item._name = self.validator.get_input_and_validate(str, "Enter new name: ")
             elif field.strip().lower() in "Date of Birth".lower():
-                item['date_of_birth'] = self.validator.get_input_and_validate(str, "Enter new date of birth (YYYY-MM-DD): ", self.validator.validate_date, "⚠️  Invalid date format")
+                item._date_of_birth = self.validator.get_input_and_validate(str, "Enter new date of birth (YYYY-MM-DD): ", self.validator.validate_date, "⚠️  Invalid date format")
             elif field.strip().lower() in "NID".lower():
-                item['nid'] = self.validator.get_input_and_validate(int, "Enter new NID no: ", self.validator.validate_nid, "⚠️  NID should be between 10 and 17 digits")
+                item._nid = self.validator.get_input_and_validate(int, "Enter new NID no: ", self.validator.validate_nid, "⚠️  NID should be between 10 and 17 digits")
             elif field.strip().lower() in "Email".lower():
-                item['email'] = self.validator.get_input_and_validate(str, "Enter new email address: ", self.validator.validate_email, "⚠️  Invalid email format")
+                item._email = self.validator.get_input_and_validate(str, "Enter new email address: ", self.validator.validate_email, "⚠️  Invalid email format")
             elif field.strip().lower() in "Phone number".lower():
-                item['phone_no'] = self.validator.get_input_and_validate(str, "Enter new phone no: ", self.validator.validate_phone_number, "⚠️  Phone no. should be 11 digits")
+                item._phone_no = self.validator.get_input_and_validate(str, "Enter new phone no: ", self.validator.validate_phone_number, "⚠️  Phone no. should be 11 digits")
             elif field.strip().lower() in "Gender".lower():
-                item['gender'] = self.validator.get_input_and_validate(str, "Enter new gender (Male/Female/Other): ", self.validator.validate_gender, "⚠️  Invalid gender input")
+                item._gender = self.validator.get_input_and_validate(str, "Enter new gender (Male/Female/Other): ", self.validator.validate_gender, "⚠️  Invalid gender input")
             elif field.strip().lower() in "Father's Name".lower():
-                item['father_name'] = self.validator.get_input_and_validate(str, "Enter new father's name: ")
+                item._father_name = self.validator.get_input_and_validate(str, "Enter new father's name: ")
             elif field.strip().lower() in "Mother's Name".lower():
-                item['mother_name'] = self.validator.get_input_and_validate(str, "Enter new mother's name: ")
+                item._mother_name = self.validator.get_input_and_validate(str, "Enter new mother's name: ")
             elif field.strip().lower() in "Marital Status".lower():
-                item['marital_status'] = self.validator.get_input_and_validate(str, "Enter new marital status (Single/Married): ")
+                item._marital_status = self.validator.get_input_and_validate(str, "Enter new marital status (Single/Married): ")
             elif field.strip().lower() in "Department".lower():
-                item['dept'] = self.validator.get_input_and_validate(str, "Enter new department name: ")
+                item._dept = self.validator.get_input_and_validate(str, "Enter new department name: ")
             elif field.strip().lower() in "Designation".lower():
-                item['designation'] = self.validator.get_input_and_validate(str, "Enter new designation: ")
+                item._designation = self.validator.get_input_and_validate(str, "Enter new designation: ")
             elif field.strip().lower() in "Nationality".lower():
-                item['nationality'] = self.validator.get_input_and_validate(str, "Enter new nationality: ")
+                item._nationality = self.validator.get_input_and_validate(str, "Enter new nationality: ")
             elif field.strip().lower() in "Joining Date".lower():
-                item['joining_date'] = self.validator.get_input_and_validate(str, "Enter new joining date (YYYY-MM-DD): ", self.validator.validate_date, "⚠️  Invalid date format")
+                item._joining_date = self.validator.get_input_and_validate(str, "Enter new joining date (YYYY-MM-DD): ", self.validator.validate_date, "⚠️  Invalid date format")
             elif field.strip().lower() in "Present Address".lower():
-                item['present_address'] = self.validator.get_input_and_validate(str, "Enter new present address: ")
+                item._present_address = self.validator.get_input_and_validate(str, "Enter new present address: ")
             elif field.strip().lower() in "Permanent Address".lower():
-                item['permanent_address'] = self.validator.get_input_and_validate(str, "Enter new permanent address: ")
+                item._permanent_address = self.validator.get_input_and_validate(str, "Enter new permanent address: ")
             else:
                 print("⚠️  You entered an invalid field, skipping this field...")
         
@@ -117,7 +117,7 @@ class EmployeeCliController:
         print("✅ Employee updated successfully!") 
     
     def deleteAnEmployee(self, employee):
-        self.employee_service.delete_an_employee(employee['employee_id'])
+        self.employee_service.delete_an_employee(employee._employee_id)
         print("✅ Employee deleted successfully!") 
 
 
@@ -130,7 +130,7 @@ class EmployeeCliController:
                 while True:
                     emp_id = input(f"Type the employee ID you want to {action} from the above result: ")
                     for item in search_result:
-                        if item['employee_id'] == int(emp_id):
+                        if item._employee_id == int(emp_id):
                             selected_emp = item
                             break
                     if selected_emp is not None:

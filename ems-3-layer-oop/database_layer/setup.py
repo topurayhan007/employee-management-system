@@ -67,7 +67,10 @@ class DatabaseManager:
     def initialize_database(self):
         db_connection = None
         try:
-            db_connection = mysql.connector.connect(**self.config)
+            config_without_db = self.config.copy()
+            config_without_db.pop('database', None)
+            db_connection = mysql.connector.connect(config_without_db)
+            # db_connection = mysql.connector.connect(**self.config)
             cursor = db_connection.cursor()
 
             try:

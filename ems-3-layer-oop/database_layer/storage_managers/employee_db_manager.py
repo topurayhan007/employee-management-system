@@ -7,13 +7,14 @@ class EmployeeDBManager:
         self.db_manager = db_manager
         self.db_connection = db_manager.get_db_connection()
 
-    def add_employee(self, employee_data):
+    def add_employee(self, employee:Employee):
         cursor = self.db_connection.cursor()
         query = (
             "INSERT INTO employees "
             "(name, date_of_birth, nid, email, phone_no, gender, father_name, mother_name, marital_status, dept, designation, nationality, joining_date, present_address, permanent_address) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         )
+        employee_data = self.employee_object_to_tuple(employee, "add")
 
         try:
             cursor.execute(query, employee_data)
@@ -38,11 +39,12 @@ class EmployeeDBManager:
 
         try:
             cursor.execute(query)
-            all_employees = cursor.fetchall()
-            
+            result = cursor.fetchall()
+            employees = self.db_data_to_employee_list(result)
+
             cursor.close()
             self.db_connection.close()
-            return all_employees
+            return employees
         
         except self.db_connection.Error as err:
             print(err.msg)
@@ -76,9 +78,11 @@ class EmployeeDBManager:
         try:
             cursor.execute(query, params)
             result = cursor.fetchall()
+            employees = self.db_data_to_employee_list(result)
+
             cursor.close()
             self.db_connection.close()
-            return result
+            return employees
         
         except self.db_connection.Error as err:
             print(err.msg)
@@ -107,7 +111,7 @@ class EmployeeDBManager:
             self.db_connection.close()
             return None
         
-    def update_an_employee(self, updated_employee_data):
+    def update_an_employee(self, employee: Employee):
         cursor = self.db_connection.cursor()
         
         query = (
@@ -130,10 +134,13 @@ class EmployeeDBManager:
             "WHERE employee_id=%s"
         )
 
+        updated_employee_data = self.employee_object_to_tuple(employee, "update")
+
         try:
             cursor.execute(query, updated_employee_data)
             self.db_connection.commit()
             result = cursor.rowcount
+            
             cursor.close()
             self.db_connection.close()
             return result
@@ -143,3 +150,65 @@ class EmployeeDBManager:
             cursor.close()
             self.db_connection.close()
             return None
+
+    # Some helper methods
+    def employee_object_to_tuple(self, employee: Employee, flag):
+        return (
+            employee._name,
+            employee._date_of_birth,
+            employee._nid,
+            employee._email,
+            employee._phone_no,
+            employee._gender,
+            employee._father_name,
+            employee._mother_name,
+            employee._marital_status,
+            employee._dept,
+            employee._designation,
+            employee._nationality,
+            employee._joining_date,
+            employee._present_address,
+            employee._permanent_address
+        ) if flag == "add" else (
+            employee._name,
+            employee._date_of_birth,
+            employee._nid,
+            employee._email,
+            employee._phone_no,
+            employee._gender,
+            employee._father_name,
+            employee._mother_name,
+            employee._marital_status,
+            employee._dept,
+            employee._designation,
+            employee._nationality,
+            employee._joining_date,
+            employee._present_address,
+            employee._permanent_address,
+            employee._employee_id
+        )
+    
+    def db_data_to_employee_list(self, data) -> list[Employee]:
+        employees: list[Employee] = []
+        for row in data:
+            employee = Employee(
+                row['employee_id'],
+                row['name'],
+                row['date_of_birth'],
+                row['nid'],
+                row['email'],
+                row['phone_no'],
+                row['gender'],
+                row['father_name'],
+                row['mother_name'],
+                row['marital_status'],
+                row['dept'],
+                row['designation'],
+                row['nationality'],
+                row['joining_date'],
+                row['present_address'],
+                row['permanent_address']
+            )
+            employees.append(employee)
+        return employees
+    
