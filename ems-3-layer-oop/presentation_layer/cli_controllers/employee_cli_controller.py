@@ -70,7 +70,7 @@ class EmployeeCliController:
             print(self.printer.print_employee_table(search_result, "multiple")) 
             return search_result   
             
-    def updateEmployeeFields(self, employee):
+    def updateEmployeeFields(self, employee: Employee):
         item = employee
         print("=> Employee selected: ")
         print(self.printer.print_employee_table(item, "single"))
@@ -116,12 +116,12 @@ class EmployeeCliController:
         self.employee_service.update_an_employee(item)
         print("✅ Employee updated successfully!") 
     
-    def deleteAnEmployee(self, employee):
+    def deleteAnEmployee(self, employee:Employee):
         self.employee_service.delete_an_employee(employee._employee_id)
         print("✅ Employee deleted successfully!") 
 
 
-    def selectEmployeeAndPerformUpdateOrDelete(self, search_result, action):
+    def selectEmployeeAndPerformUpdateOrDelete(self, search_result: list[Employee], action):
         if isinstance(search_result, str):
                 print(search_result)
         else: 
