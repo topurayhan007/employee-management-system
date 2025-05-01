@@ -69,7 +69,7 @@ class DatabaseManager:
         try:
             config_without_db = self.config.copy()
             config_without_db.pop('database', None)
-            db_connection = mysql.connector.connect(config_without_db)
+            db_connection = mysql.connector.connect(**config_without_db)
             # db_connection = mysql.connector.connect(**self.config)
             cursor = db_connection.cursor()
 
