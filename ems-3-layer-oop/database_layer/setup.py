@@ -107,7 +107,12 @@ class DatabaseManager:
 
     # Get DB connection when needed by any file to perform DB operations
     def get_db_connection(self):
-        return mysql.connector.connect(**self.config)
+        try:
+            connection = mysql.connector.connect(**self.config)
+            return connection
+        except mysql.connector.Error as err:
+            print(f"Error connecting to database: {err}")
+            raise
 
 
 
