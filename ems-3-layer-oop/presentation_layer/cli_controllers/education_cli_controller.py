@@ -74,7 +74,7 @@ class EducationCliController:
         if result == 1:
             print("✅ Education degree updated successfully!") 
         else:
-            print("✅ Couldn't update degree, please try again!") 
+            print("⚠️  Couldn't update degree, please try again!") 
 
     def update_educational_degree(self, degrees: list[EducationalDegree], degree_id):
         for item in degrees:

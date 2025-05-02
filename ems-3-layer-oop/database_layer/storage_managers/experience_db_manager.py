@@ -91,13 +91,14 @@ class ExperienceDBManager:
             "location=%s " 
             "WHERE experience_id=%s"
         )
-        
+
         updated_experience_data = self.experience_object_to_tuple(experience, "update")
 
         try:
             cursor.execute(query, updated_experience_data)
             db_connection.commit()
             result = cursor.rowcount
+            
             cursor.close()
             db_connection.close()
             return result

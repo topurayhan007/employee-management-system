@@ -66,10 +66,11 @@ class ExperienceCliController:
                 print("⚠️  You entered an invalid field, skipping this field...")
 
         result = self.experience_service.update_an_experience_of_an_employee(item)
+        
         if result == 1:
             print("✅ Experience updated successfully!") 
         else:
-            print("✅ Couldn't update experience, please try again!")
+            print("⚠️  Couldn't update experience, please try again!")
 
 
     def update_experience(self, experiences: list[Experience], experience_id):
