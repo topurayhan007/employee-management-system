@@ -91,7 +91,7 @@ class ExperienceDBManager:
             "location=%s " 
             "WHERE experience_id=%s"
         )
-
+        
         updated_experience_data = self.experience_object_to_tuple(experience, "update")
 
         try:
@@ -118,13 +118,13 @@ class ExperienceDBManager:
             experience._ending_date,
             experience._location
         ) if flag == "add" else (
-            experience._experience_id,
             experience._employee_id,
             experience._company_name,
             experience._position,
             experience._joining_date,
             experience._ending_date,
-            experience._location
+            experience._location,
+            experience._experience_id,
         )
     
     def db_data_to_experience_list(self, data) -> list[Experience]:
