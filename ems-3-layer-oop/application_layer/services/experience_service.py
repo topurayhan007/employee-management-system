@@ -1,5 +1,5 @@
 from application_layer.classes.experience import Experience
-from database_layer.setup import DatabaseManager
+from database_layer.db_setup import DatabaseManager
 from database_layer.storage_managers.experience_db_manager import ExperienceDBManager
 class ExperienceService:
     def __init__(self, db_manager: DatabaseManager):

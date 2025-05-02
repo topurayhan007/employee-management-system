@@ -1,5 +1,5 @@
 from application_layer.classes.education import EducationalDegree
-from database_layer.setup import DatabaseManager
+from database_layer.db_setup import DatabaseManager
 class EducationDBManager:
     def __init__(self, db_manager:DatabaseManager):
         self.db_manager = db_manager
@@ -14,7 +14,7 @@ class EducationDBManager:
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
         )
 
-        degree_data = self.degree_object_to_tuple(degree)
+        degree_data = self.degree_object_to_tuple(degree, "add")
 
         try:
             cursor.execute(add_degree_query, degree_data)

@@ -1,6 +1,6 @@
 # Bridge between CLI controllers and DB managers
 from application_layer.classes.employee import Employee
-from database_layer.setup import DatabaseManager
+from database_layer.db_setup import DatabaseManager
 from database_layer.storage_managers.employee_db_manager import EmployeeDBManager
 
 class EmployeeService:

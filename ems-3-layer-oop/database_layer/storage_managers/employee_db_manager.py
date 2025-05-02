@@ -1,6 +1,6 @@
 # Database Class with queries, methods to perform queries to DB, retrieve data to class object
 from application_layer.classes.employee import Employee
-from database_layer.setup import DatabaseManager
+from database_layer.db_setup import DatabaseManager
 
 class EmployeeDBManager:
     def __init__(self, db_manager: DatabaseManager):

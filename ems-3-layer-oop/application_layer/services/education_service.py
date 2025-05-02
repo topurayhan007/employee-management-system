@@ -1,5 +1,5 @@
 from application_layer.classes.education import EducationalDegree
-from database_layer.setup import DatabaseManager
+from database_layer.db_setup import DatabaseManager
 from database_layer.storage_managers.education_db_manager import EducationDBManager
 
 class EducationService:

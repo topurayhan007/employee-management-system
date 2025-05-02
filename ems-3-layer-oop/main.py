@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from database_layer.setup import DatabaseManager
+from database_layer.db_setup import DatabaseManager
 from application_layer.services.employee_service import EmployeeService
 from application_layer.services.education_service import EducationService
 from application_layer.services.experience_service import ExperienceService

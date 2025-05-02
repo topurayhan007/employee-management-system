@@ -1,5 +1,5 @@
 from application_layer.classes.experience import Experience
-from database_layer.setup import DatabaseManager
+from database_layer.db_setup import DatabaseManager
 class ExperienceDBManager:
     def __init__(self, db_manager: DatabaseManager):
         self.db_manager = db_manager
@@ -14,7 +14,7 @@ class ExperienceDBManager:
             "VALUES (%s, %s, %s, %s, %s, %s)"
         )
 
-        experience_data = self.experience_object_to_tuple(experience)
+        experience_data = self.experience_object_to_tuple(experience, "add")
 
         try:
             cursor.execute(query, experience_data)
